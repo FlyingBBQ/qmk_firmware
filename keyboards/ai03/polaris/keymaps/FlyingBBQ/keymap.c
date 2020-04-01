@@ -18,7 +18,6 @@
 enum layer_names {
     _BASE,
     _FN,
-    _MC
 };
 
 enum custom_keycodes {
@@ -38,17 +37,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_FN] = LAYOUT_all
     (
          RESET  , KC_F1  , KC_F2  , KC_F3  , KC_F4  , KC_F5  , KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 , KC_F11 , KC_F12 , KC_DEL , KC_BSPC ,
-         _______, _______, KC_PGUP, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT, _______,
+         _______, _______, KC_PGUP, _______, _______, _______, _______, _______, _______, _______, KC_MPLY, KC_MPRV, KC_MNXT, KC_DEL ,
          KC_CAPS, KC_HOME, KC_PGDN, KC_END , _______, _______, KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, _______, _______, _______,
          _______, _______, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, _______, _______, KC_PSCR, _______,
-         _______, _______, _______, _______, _______, _______, _______, _______, OSL(_MC), _______
-    ),
-    [_MC] = LAYOUT_all
-    (
-         _______, MC_GITH, MC_MECH, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     )
 };
@@ -58,27 +49,6 @@ void keyboard_post_init_user(void) {
     rgblight_sethsv_noeeprom(57, 255, 255); // sets the color without saving
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 }
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    bool process_key = true;
-    switch (keycode) {
-        case MC_GITH:
-            if (record->event.pressed) {
-                SEND_STRING("https://www.github.com/FlyingBBQ");
-                process_key = false;
-            }
-            break;
-        case MC_MECH:
-            if (record->event.pressed) {
-                SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/");
-                process_key = false;
-            }
-            break;
-        default:
-            break;
-    }
-    return process_key;
-};
 
 LEADER_EXTERNS();
 void matrix_scan_user(void) {
@@ -90,6 +60,12 @@ void matrix_scan_user(void) {
         }
         SEQ_TWO_KEYS(KC_G, KC_L) {
             SEND_STRING("https://gitlab.com/FlyingBBQ\n");
+        }
+        SEQ_TWO_KEYS(KC_M, KC_k) {
+            SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/");
+        }
+        SEQ_TWO_KEYS(KC_R, KC_R, KC_R) {
+            reset()
         }
         leader_end();
     }
