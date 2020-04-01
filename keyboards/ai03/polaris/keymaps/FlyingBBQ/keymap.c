@@ -5,11 +5,6 @@ enum layer_names {
     _FN,
 };
 
-enum custom_keycodes {
-    MC_GITH = SAFE_RANGE,
-    MC_MECH
-};
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_all
     (
