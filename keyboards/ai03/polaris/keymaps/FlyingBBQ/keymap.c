@@ -31,11 +31,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
     rgblight_enable_noeeprom(); // enables Rgb, without saving settings
-    rgblight_sethsv_noeeprom(57, 255, 255); // sets the color without saving
+    rgblight_sethsv_noeeprom(HSV_BLUE); // sets the color without saving
     rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
 }
 
 LEADER_EXTERNS();
+
 void matrix_scan_user(void) {
     LEADER_DICTIONARY() {
         leading = false;
@@ -47,9 +48,10 @@ void matrix_scan_user(void) {
             SEND_STRING("https://gitlab.com/FlyingBBQ\n");
         }
         SEQ_TWO_KEYS(KC_M, KC_K) {
-            SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/");
+            SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/\n");
         }
         SEQ_THREE_KEYS(KC_R, KC_R, KC_R) {
+            rgblight_sethsv_noeeprom(HSV_RED);
             reset_keyboard();
         }
         leader_end();
