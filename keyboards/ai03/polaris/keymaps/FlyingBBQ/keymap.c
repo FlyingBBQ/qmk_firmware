@@ -46,11 +46,11 @@ void matrix_scan_user(void) {
         SEQ_TWO_KEYS(KC_G, KC_L) {
             SEND_STRING("https://gitlab.com/FlyingBBQ\n");
         }
-        SEQ_TWO_KEYS(KC_M, KC_k) {
+        SEQ_TWO_KEYS(KC_M, KC_K) {
             SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/");
         }
         SEQ_THREE_KEYS(KC_R, KC_R, KC_R) {
-            reset_keyboard()
+            reset_keyboard();
         }
         leader_end();
     }
