@@ -13,7 +13,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
          KC_TAB , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSPC,
          KC_LCTL, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_QUOT, KC_ENT ,
          KC_LSFT, KC_NO  , KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, MO(_FN),
-         KC_NO  , MO(_FN), KC_LGUI, KC_NO  , KC_SPC , KC_NO  , KC_NO  , KC_LEAD, KC_LALT, KC_NO
+         KC_NO  , MO(_FN), KC_LGUI, KC_NO  , KC_SPC , KC_NO  , KC_NO  , QK_LEAD, KC_LALT, KC_NO
     ),
     [_FN] = LAYOUT_all
     (
@@ -35,44 +35,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void)
 {
-    rgblight_enable_noeeprom(); // Enables RGB, without saving settings
-    rgblight_sethsv_noeeprom(HSV_BLUE); // Sets the color without saving
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    // Disable RGB, without saving settings in EEPROM
+    rgblight_disable_noeeprom();
 }
 
-LEADER_EXTERNS();
-void matrix_scan_user(void)
+void leader_end_user(void)
 {
-    LEADER_DICTIONARY() {
-        leading = false;
-
-        SEQ_TWO_KEYS(KC_G, KC_H) {
-            SEND_STRING("https://www.github.com/FlyingBBQ\n");
-        }
-        SEQ_TWO_KEYS(KC_G, KC_L) {
-            SEND_STRING("https://gitlab.com/FlyingBBQ\n");
-        }
-        SEQ_TWO_KEYS(KC_M, KC_K) {
-            SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/\n");
-        }
+    if (leader_sequence_two_keys(KC_G, KC_H)) {
+        SEND_STRING("https://www.github.com/FlyingBBQ\n");
+    } else if (leader_sequence_two_keys(KC_G, KC_L)) {
+        SEND_STRING("https://gitlab.com/FlyingBBQ\n");
+    } else if (leader_sequence_two_keys(KC_M, KC_K)) {
+        SEND_STRING("https://www.reddit.com/r/MechanicalKeyboards/\n");
+    } else if (leader_sequence_three_keys(KC_R, KC_R, KC_R)) {
         // Put the keyboard into reset mode
-        SEQ_THREE_KEYS(KC_R, KC_R, KC_R) {
-            rgblight_enable_noeeprom();
-            rgblight_sethsv_noeeprom(HSV_RED);
-            reset_keyboard();
-        }
+        reset_keyboard();
+    } else if (leader_sequence_two_keys(KC_A, KC_R)) {
         // Toggle the _AR layer
-        SEQ_TWO_KEYS(KC_A, KC_R) {
-            if (IS_LAYER_ON(_AR)) {
-                layer_off(_AR);
-                keyboard_post_init_user();
-            } else {
-                layer_on(_AR);
-                rgblight_enable_noeeprom();
-                rgblight_sethsv_noeeprom(HSV_YELLOW);
-            }
+        if (IS_LAYER_ON(_AR)) {
+            layer_off(_AR);
+        } else {
+            layer_on(_AR);
         }
-
-        leader_end();
     }
 }
+
