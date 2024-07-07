@@ -13,7 +13,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB , KC_Q   , KC_W   , KC_E , KC_R  , KC_T  , KC_Y  , KC_U , KC_I   , KC_O   , KC_P   , KC_LBRC, KC_RBRC, KC_BSPC,
         KC_LCTL, KC_A   , KC_S   , KC_D , KC_F  , KC_G  , KC_H  , KC_J , KC_K   , KC_L   , KC_SCLN, KC_QUOT, KC_ENT ,
 		KC_LSFT, KC_Z   , KC_X   , KC_C , KC_V  , KC_B  , KC_N  , KC_M , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT, MO(1)  ,
-		KC_NO  , MO(_FN), KC_LGUI, KC_NO, KC_SPC, KC_SPC, KC_SPC, KC_NO, KC_LALT, KC_RALT, KC_NO
+		KC_NO  , MO(_FN), KC_LGUI, KC_NO, KC_SPC, KC_SPC, KC_SPC, KC_NO, QK_LEAD, KC_LALT, KC_NO
 	),
 	[_FN] = LAYOUT
     (
@@ -25,3 +25,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	)
 };
 
+void leader_end_user(void)
+{
+    if (leader_sequence_two_keys(KC_G, KC_H)) {
+        SEND_STRING("https://www.github.com/FlyingBBQ\n");
+    } else if (leader_sequence_two_keys(KC_G, KC_L)) {
+        SEND_STRING("https://gitlab.com/FlyingBBQ\n");
+    } else if (leader_sequence_three_keys(KC_R, KC_R, KC_R)) {
+        // Put the keyboard into reset mode
+        reset_keyboard();
+    }
+}
